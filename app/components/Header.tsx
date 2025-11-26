@@ -66,15 +66,15 @@ export default function Header() {
             <IoPersonOutline size={22} className="text-gray-600" />
           </button>
 
-          <button className="relative cursor-pointer rounded-full p-2.5 hover:bg-gray-100">
+          <Link to="/cart" className="relative cursor-pointer rounded-full p-2.5 hover:bg-gray-100">
             <IoCartOutline size={22} className="text-gray-600" />
 
             {totalQuantity !== 0 && (
-              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-linear-to-br from-red-500 to-red-600 text-[10px] font-bold text-white shadow-lg ring-2 shadow-red-500/40 ring-white">
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-linear-to-br from-red-500 to-red-600 text-xs font-bold text-white shadow-lg ring-2 shadow-red-500/40 ring-white">
                 {totalQuantity}
               </span>
             )}
-          </button>
+          </Link>
         </div>
       </div>
 

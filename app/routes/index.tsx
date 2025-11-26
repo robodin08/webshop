@@ -3,10 +3,9 @@ import { type RouteObject } from "react-router";
 import Layout from "~/components/Layout";
 import Home from "~/pages/Home";
 import Product from "~/pages/Product";
+import Cart from "~/pages/Cart";
 import NotFound from "~/pages/NotFound";
 import ErrorPage from "~/pages/ErrorPage";
-
-import { productLoader } from "~/loaders/productLoader";
 
 export const routes: RouteObject[] = [
   {
@@ -19,9 +18,12 @@ export const routes: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: "p/:pname/:pid",
+        path: "cart",
+        element: <Cart />,
+      },
+      {
+        path: "p/:pid",
         element: <Product />,
-        loader: productLoader,
       },
       {
         path: "*",

@@ -1,10 +1,10 @@
-import common from '../../public/locales/en/common.json';
+import cart from '../../public/locales/en/cart.json';
 import footer from '../../public/locales/en/footer.json';
 import header from '../../public/locales/en/header.json';
 import product from '../../public/locales/en/product.json';
 
 const resources = {
-  common,
+  cart,
   footer,
   header,
   product

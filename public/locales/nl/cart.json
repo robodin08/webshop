@@ -1,0 +1,13 @@
+{
+    "shoppingCart": "Winkelwagen",
+    "emptyCart": "Je winkelwagen is leeg",
+    "continueShopping": "Verder winkelen",
+    "quantity": "Aantal",
+    "price": "Prijs",
+    "subtotal": "Subtotaal",
+    "total": "Totaal",
+    "delete": "Verwijderen",
+    "proceedToCheckout": "Afrekenen",
+    "items_one": "{{count}} artikel",
+    "items_other": "{{count}} artikelen"
+}

@@ -1,0 +1,13 @@
+{
+    "shoppingCart": "Shopping Cart",
+    "emptyCart": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "quantity": "Quantity",
+    "price": "Price",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "delete": "Delete",
+    "proceedToCheckout": "Proceed to checkout",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items"
+}

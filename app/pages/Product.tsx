@@ -1,22 +1,43 @@
-import { useLoaderData } from "react-router";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IoCartOutline } from "react-icons/io5";
+import { IoCartOutline, IoCheckmarkOutline } from "react-icons/io5";
 
 import type { Product as ProductType } from "~/data/products";
 
 import { useCart } from "~/hooks/useCart";
 
 function Product() {
-  const product = useLoaderData() as ProductType;
+  const { pid } = useParams<{ pid: string }>();
   const { t } = useTranslation("product");
+  const { loaded: cartLoaded, cart, getProductById, incrementItemQuantity } = useCart();
 
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const [image, setImage] = useState(0);
-  const { incrementItem } = useCart();
 
   useEffect(() => {
-    document.title = `${product.name} | Webshoppy`;
-  }, [product.name]);
+    async function fetchProduct() {
+      if (!pid) {
+        setLoaded(true);
+        return;
+      }
+
+      const p = cart[pid] || (await getProductById(pid));
+
+      if (p) {
+        setProduct(p);
+        document.title = `${p.name} | Webshoppy`;
+      }
+
+      setLoaded(true);
+    }
+
+    fetchProduct();
+  }, [cartLoaded]);
+
+  if (!loaded) return null;
+  if (!product) throw new Error(`Product not found`);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -66,13 +87,20 @@ function Product() {
             <p className="text-gray-700">{product.description}</p>
           </div>
 
-          <button
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700 sm:w-auto"
-            onClick={() => incrementItem(product.id, product.price)}
-          >
-            <IoCartOutline size={20} />
-            {t("inShoppingCart")}
-          </button>
+          {pid && cart[pid] ? (
+            <button className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-3 font-medium text-white shadow-sm hover:bg-green-700 focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:outline-none sm:w-auto">
+              <IoCheckmarkOutline size={20} />
+              {t("inShoppingCart")}
+            </button>
+          ) : (
+            <button
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none sm:w-auto"
+              onClick={() => incrementItemQuantity(product)}
+            >
+              <IoCartOutline size={20} />
+              {t("inShoppingCart")}
+            </button>
+          )}
         </div>
       </div>
     </div>

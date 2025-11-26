@@ -13,18 +13,28 @@ function Home() {
       <nav>
         <ul className="space-y-2">
           <li>
-            <Link to="/p/_/0" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link to="/p/0" className="text-blue-600 hover:text-blue-800 hover:underline">
               Product 0
             </Link>
           </li>
           <li>
-            <Link to="/p/_/1" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link to="/p/1" className="text-blue-600 hover:text-blue-800 hover:underline">
               Product 1
             </Link>
           </li>
           <li>
-            <Link to="/p/_/2" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link to="/p/2" className="text-blue-600 hover:text-blue-800 hover:underline">
               Product 2
+            </Link>
+          </li>
+          <li>
+            <Link to="/p/3" className="text-blue-600 hover:text-blue-800 hover:underline">
+              Product 3
+            </Link>
+          </li>
+          <li>
+            <Link to="/p/4" className="text-blue-600 hover:text-blue-800 hover:underline">
+              Product 4
             </Link>
           </li>
         </ul>
