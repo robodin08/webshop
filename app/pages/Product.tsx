@@ -153,7 +153,7 @@ function Product() {
           >
             <img
               src={`/assets/products/${product.id}/${image}_big.png`}
-              className="max-h-full max-w-full object-contain"
+              className="h-5/6 max-h-full max-w-full object-contain"
             />
           </div>
 

@@ -1,0 +1,20 @@
+{
+    "searchResults": "Zoekresultaten",
+    "searchFor": "Zoeken naar",
+    "noResults": "Geen producten gevonden",
+    "noResultsDescription": "Probeer je zoekopdracht of filters aan te passen",
+    "results_one": "{{count}} resultaat",
+    "results_other": "{{count}} resultaten",
+    "filters": "Filters",
+    "clearFilters": "Wis alles",
+    "priceRange": "Prijsbereik",
+    "minPrice": "Min",
+    "maxPrice": "Max",
+    "sortBy": "Sorteren op",
+    "sortRelevance": "Relevantie",
+    "sortPriceLowToHigh": "Prijs: Laag naar Hoog",
+    "sortPriceHighToLow": "Prijs: Hoog naar Laag",
+    "sortNameAZ": "Naam: A-Z",
+    "sortNameZA": "Naam: Z-A",
+    "viewProduct": "Bekijk details"
+}

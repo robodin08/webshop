@@ -6,6 +6,7 @@ import Product from "~/pages/Product";
 import Cart from "~/pages/Cart";
 import NotFound from "~/pages/NotFound";
 import ErrorPage from "~/pages/ErrorPage";
+import Search from "~/pages/Search";
 
 export const routes: RouteObject[] = [
   {
@@ -20,6 +21,10 @@ export const routes: RouteObject[] = [
       {
         path: "cart",
         element: <Cart />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
       {
         path: "p/:pid",

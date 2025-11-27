@@ -11,12 +11,22 @@ interface CartProduct extends Product {
 type Cart = Record<string, CartProduct>;
 type QuantityCart = Record<string, number>;
 
+export type SortOption = "relevance" | "price-low" | "price-high" | "name-asc" | "name-desc";
+
+export interface SearchFilters {
+  query?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: SortOption;
+}
+
 export interface CartContextType {
   loaded: boolean;
   cart: Cart;
   total: number;
   totalQuantity: number;
   getProductById: (id: string) => Promise<Product | undefined>;
+  searchProducts: (filters: SearchFilters) => Promise<Product[]>;
   incrementItemQuantity: (product: Product, quantity?: number) => void;
   decrementItemQuantity: (product: Product, quantity?: number) => void;
   setItemQuantity: (product: Product, quantity: number) => void;
@@ -137,6 +147,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [i18n.resolvedLanguage]);
 
+  // to api
   async function getProductById(id: string): Promise<Product | undefined> {
     await sleep(500);
 
@@ -153,6 +164,51 @@ export function CartProvider({ children }: { children: ReactNode }) {
       name: product.name[lang],
       description: product.description[lang],
     };
+  }
+
+  // to api
+  async function searchProducts(filters: SearchFilters): Promise<Product[]> {
+    const loadedProducts = await Promise.all(
+      Array.from({ length: PRODUCTS.length }, async (_, index) => {
+        return await getProductById(String(index));
+      })
+    );
+
+    const products = loadedProducts.filter((p): p is Product => p !== undefined);
+
+    let filtered = products;
+
+    if (filters.query) {
+      const lowerQuery = filters.query.toLowerCase();
+      filtered = filtered.filter(
+        (p) => p.name.toLowerCase().includes(lowerQuery) || p.description.toLowerCase().includes(lowerQuery)
+      );
+    }
+
+    const min = filters.minPrice ?? 0;
+    const max = filters.maxPrice ?? Infinity;
+    filtered = filtered.filter((p) => p.price >= min && p.price <= max);
+
+    const sorted = [...filtered];
+    switch (filters.sortBy) {
+      case "price-low":
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case "price-high":
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case "name-asc":
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-desc":
+        sorted.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case "relevance":
+      default:
+        break;
+    }
+
+    return sorted;
   }
 
   function incrementItemQuantity(product: Product, quantity = 1) {
@@ -271,6 +327,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         total,
         totalQuantity,
         getProductById,
+        searchProducts,
         incrementItemQuantity,
         decrementItemQuantity,
         setItemQuantity,

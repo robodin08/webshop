@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSearch, IoPersonOutline, IoCartOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import { useCart } from "~/hooks/useCart";
 
@@ -10,8 +10,14 @@ import LanguageMenu from "~/components/LanguageMenu";
 export default function Header() {
   const { t } = useTranslation("header");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const query = searchParams.get("q") || "";
+    setSearch(query);
+  }, [searchParams]);
 
   const { totalQuantity } = useCart();
 
@@ -42,6 +48,7 @@ export default function Header() {
           <div className="relative w-full">
             <IoSearch size={20} className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400" />
             <input
+              id="search-desktop"
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -84,6 +91,7 @@ export default function Header() {
           <div className="relative w-full">
             <IoSearch size={18} className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400" />
             <input
+              id="search-mobile"
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

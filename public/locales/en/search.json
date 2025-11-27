@@ -1,0 +1,20 @@
+{
+    "searchResults": "Search Results",
+    "searchFor": "Search for",
+    "noResults": "No products found",
+    "noResultsDescription": "Try adjusting your search or filters",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "filters": "Filters",
+    "clearFilters": "Clear all",
+    "priceRange": "Price Range",
+    "minPrice": "Min",
+    "maxPrice": "Max",
+    "sortBy": "Sort by",
+    "sortRelevance": "Relevance",
+    "sortPriceLowToHigh": "Price: Low to High",
+    "sortPriceHighToLow": "Price: High to Low",
+    "sortNameAZ": "Name: A-Z",
+    "sortNameZA": "Name: Z-A",
+    "viewProduct": "View details"
+}
