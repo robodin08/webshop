@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { LanguageKey } from "~/constants/languages";
-import { PRODUCTS, type Product } from "~/data/products";
+import { PRODUCTS, type Product } from "~/constants/products";
 import { sleep } from "~/utils";
 
 interface CartProduct extends Product {

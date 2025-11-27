@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoCartOutline, IoCheckmarkOutline, IoClose, IoChevronBack, IoChevronForward } from "react-icons/io5";
 
-import type { Product as ProductType } from "~/data/products";
+import type { Product as ProductType } from "~/constants/products";
 
 import { useCart } from "~/hooks/useCart";
 import { splitCurrencyAmount } from "~/utils";
@@ -154,7 +154,6 @@ function Product() {
             <img
               src={`/assets/products/${product.id}/${image}_big.png`}
               className="max-h-full max-w-full object-contain"
-              alt={product.name}
             />
           </div>
 
@@ -188,7 +187,6 @@ function Product() {
                   <img
                     src={`/assets/products/${product.id}/${index}_small.png`}
                     className="h-full w-full object-contain"
-                    alt={`${product.name} thumbnail ${index + 1}`}
                   />
                 </button>
               ))}

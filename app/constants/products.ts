@@ -26,7 +26,7 @@ export const PRODUCTS: RawProduct[] = [
       nl: "Dompel jezelf onder in kristalhelder geluid met deze hoogwaardige over-ear gamingheadset. Surround sound laat elke strijd levensecht voelen.",
     },
     images: 5,
-    price: 9998,
+    price: 99_98,
     maxQuantity: 999,
   },
   {
@@ -37,7 +37,7 @@ export const PRODUCTS: RawProduct[] = [
       nl: "Neem de controle over elk spel met deze ergonomische gamingmuis met razendsnelle instelbare DPI en precieze tracking.",
     },
     images: 5,
-    price: 4595,
+    price: 45_95,
     maxQuantity: 10,
   },
   {
@@ -48,7 +48,7 @@ export const PRODUCTS: RawProduct[] = [
       nl: "Zie elk detail haarscherp op deze 27-inch 144Hz gamingmonitor met 1ms reactietijd. Perfect voor gaming op pro-niveau.",
     },
     images: 5,
-    price: 25025,
+    price: 250_25,
     maxQuantity: 999,
   },
   {
@@ -59,7 +59,7 @@ export const PRODUCTS: RawProduct[] = [
       nl: "Overwin je games met deze high-end, precisie-engineered gamingmuis. Strak design en supersnelle knoppen garanderen overwinning bij elke klik.",
     },
     images: 5,
-    price: 8999,
+    price: 89_99,
     maxQuantity: 5,
   },
   {
@@ -70,7 +70,7 @@ export const PRODUCTS: RawProduct[] = [
       nl: "Beleef de ultieme kijkervaring met deze gigantische monitor. Perfect voor gamen, multitasken of om van je setup een commandocentrum te maken.",
     },
     images: 5,
-    price: 99999,
+    price: 999_99,
     maxQuantity: 999,
   },
 ];

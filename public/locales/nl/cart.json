@@ -9,5 +9,9 @@
     "delete": "Verwijderen",
     "proceedToCheckout": "Afrekenen",
     "items_one": "{{count}} artikel",
-    "items_other": "{{count}} artikelen"
+    "items_other": "{{count}} artikelen",
+    "delivery": "Verzending",
+    "free": "GRATIS",
+    "freeDeliveryApplied": "Gratis verzending toegepast!",
+    "freeDeliveryHint": "Voeg nog {{amount}} toe voor gratis verzending"
 }

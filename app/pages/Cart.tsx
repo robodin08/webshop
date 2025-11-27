@@ -1,8 +1,9 @@
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import { IoAdd, IoRemove, IoTrash } from "react-icons/io5";
+import { IoAdd, IoRemove, IoTrash, IoCheckmarkCircle, IoInformationCircle } from "react-icons/io5";
 import { useCart } from "~/hooks/useCart";
 import { formatCurrency } from "~/utils";
+import { DELIVERY_COST, FREE_DELIVERY_THRESHOLD } from "~/constants/delivery";
 
 function Cart() {
   const { loaded, cart, total, totalQuantity, incrementItemQuantity, decrementItemQuantity, setItemQuantity } =
@@ -28,6 +29,10 @@ function Cart() {
     );
   }
 
+  const isFreeDelivery = total >= FREE_DELIVERY_THRESHOLD;
+  const deliveryCost = isFreeDelivery ? 0 : DELIVERY_COST;
+  const finalTotal = total + deliveryCost;
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-3xl font-bold text-gray-900">{t("shoppingCart")}</h1>
@@ -48,7 +53,7 @@ function Cart() {
                   {/* Product Image */}
                   <Link to={`/p/${item.id}`} target="_blank" rel="noopener noreferrer" className="shrink-0">
                     <div className="aspect-square w-full overflow-hidden rounded-md sm:h-32 sm:w-32">
-                      <img src={imageUrl} alt={item.name} className="h-full w-full object-contain" />
+                      <img src={imageUrl} className="h-full w-full object-contain" />
                     </div>
                   </Link>
 
@@ -68,7 +73,7 @@ function Cart() {
                     </div>
 
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                      {/* Quantity Controls - Fixed width to prevent shifting */}
+                      {/* Quantity Controls */}
                       <div className="flex items-center gap-2">
                         <div className="flex items-center rounded-lg border border-gray-300 bg-gray-50 shadow-sm">
                           <button
@@ -137,9 +142,30 @@ function Cart() {
                 <span>{formatCurrency(total)}</span>
               </div>
 
+              <div className="flex justify-between text-base text-gray-900">
+                <span>{t("delivery")}</span>
+                <span className={isFreeDelivery ? "font-semibold text-green-600" : ""}>
+                  {isFreeDelivery ? t("free") : formatCurrency(deliveryCost)}
+                </span>
+              </div>
+
+              {isFreeDelivery && (
+                <div className="flex items-center gap-2 rounded-md bg-green-50 p-3 text-sm text-green-800">
+                  <IoCheckmarkCircle className="h-5 w-5 shrink-0" />
+                  <span>{t("freeDeliveryApplied")}</span>
+                </div>
+              )}
+
+              {!isFreeDelivery && total > 0 && (
+                <div className="flex items-center gap-2 rounded-md bg-blue-50 p-3 text-sm text-blue-800">
+                  <IoInformationCircle className="h-5 w-5 shrink-0" />
+                  <span>{t("freeDeliveryHint", { amount: formatCurrency(FREE_DELIVERY_THRESHOLD - total) })}</span>
+                </div>
+              )}
+
               <div className="flex justify-between border-t border-gray-200 pt-3 text-lg font-semibold text-gray-900">
                 <span>{t("total")}</span>
-                <span>{formatCurrency(total)}</span>
+                <span>{formatCurrency(finalTotal)}</span>
               </div>
             </div>
 
