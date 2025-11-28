@@ -319,6 +319,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  if (!loaded) return null;
+
   return (
     <CartContext.Provider
       value={{

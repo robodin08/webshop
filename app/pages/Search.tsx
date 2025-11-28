@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { IoClose, IoFunnel } from "react-icons/io5";
 import { useCart } from "~/hooks/useCart";
@@ -9,6 +9,7 @@ import type { SortOption } from "~/contexts/CartContext";
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { t } = useTranslation("search");
   const { searchProducts } = useCart();
 
@@ -22,6 +23,7 @@ function Search() {
   const [sortBy, setSortBy] = useState<SortOption>((searchParams.get("s") as SortOption) || "relevance");
 
   useEffect(() => {
+    if (!query || query === "") navigate("/");
     document.title = query ? `${query} - Search | Webshoppy` : "Search | Webshoppy";
   }, [query]);
 
@@ -141,7 +143,7 @@ function Search() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                className="w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
               >
                 <option value="relevance">{t("sortRelevance")}</option>
                 <option value="price-low">{t("sortPriceLowToHigh")}</option>

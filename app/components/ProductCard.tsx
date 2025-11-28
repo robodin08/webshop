@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="mb-3 text-xl font-bold text-red-600">{formatCurrency(product.price)}</p>
 
           {isInCart ? (
-            <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700">
+            <button className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700">
               <IoCheckmarkOutline size={20} />
               {t("inShoppingCart", { ns: "product" })}
             </button>
@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 e.preventDefault();
                 incrementItemQuantity(product);
               }}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               <IoCartOutline size={20} />
               {t("inShoppingCart", { ns: "product" })}

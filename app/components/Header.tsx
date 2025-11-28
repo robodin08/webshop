@@ -58,7 +58,7 @@ export default function Header() {
             />
             <button
               onClick={handleSearch}
-              className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full bg-linear-to-r from-blue-600 to-blue-700 px-5 py-1.5 text-sm font-medium text-white shadow-md hover:shadow-lg"
+              className="absolute top-1/2 right-1.5 -translate-y-1/2 cursor-pointer rounded-full bg-linear-to-r from-blue-600 to-blue-700 px-5 py-1.5 text-sm font-medium text-white shadow-md hover:shadow-lg"
             >
               <span className="inline-block w-12 text-center">{t("search.label")}</span>
             </button>

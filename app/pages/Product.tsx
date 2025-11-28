@@ -20,6 +20,7 @@ function Product() {
 
   useEffect(() => {
     async function fetchProduct() {
+      setLoaded(false);
       if (!pid) {
         setLoaded(true);
         return;
@@ -48,7 +49,7 @@ function Product() {
     setImage((prev) => (prev === product.images - 1 ? 0 : prev + 1));
   }
 
-  if (!loaded) return null;
+  if (!loaded || !cartLoaded) return null;
   if (!product) throw new Error(`Product not found`);
 
   const { euros, cents } = splitCurrencyAmount(product.price);
@@ -180,7 +181,7 @@ function Product() {
                     e.stopPropagation();
                     setImage(index);
                   }}
-                  className={`h-16 w-16 overflow-hidden rounded-lg border-2 transition-all ${
+                  className={`h-16 w-16 cursor-pointer overflow-hidden rounded-lg border-2 transition-all ${
                     image === index ? "border-blue-500" : "border-gray-300 opacity-60 hover:opacity-100"
                   }`}
                 >

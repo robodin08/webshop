@@ -3,7 +3,7 @@ export function sleep(ms: number): Promise<void> {
 }
 
 export function formatCurrency(price: number): string {
-  return `€${(price / 100).toFixed(2)}`;
+  return `€${(price / 100).toFixed(2).replace(".", ",")}`;
 }
 
 export function splitCurrencyAmount(price: number) {
