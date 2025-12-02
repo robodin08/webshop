@@ -22,7 +22,7 @@ function Cart() {
 
   if (isEmpty) {
     return (
-      <>
+      <div className="py-16 text-center">
         <h1 className="mb-4 text-3xl font-bold text-gray-900">{t("emptyCart")}</h1>
         <Link
           to="/"
@@ -30,7 +30,7 @@ function Cart() {
         >
           {t("continueShopping")}
         </Link>
-      </>
+      </div>
     );
   }
 
