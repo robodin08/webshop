@@ -25,7 +25,9 @@ function Search() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(categoryParam ? categoryParam.split(",") : []);
 
   useEffect(() => {
-    document.title = `${t("pageTitle.searchWithQuery", { ns: "common", query: query || "" })} | ${t("pageTitle.home", { ns: "common" })}`;
+    document.title = query
+      ? `${t("pageTitle.searchWithQuery", { ns: "common", query })} | ${t("pageTitle.home", { ns: "common" })}`
+      : `${t("pageTitle.search", { ns: "common", query })} | ${t("pageTitle.home", { ns: "common" })}`;
   }, [query, selectedCategories, t]);
 
   useEffect(() => {
