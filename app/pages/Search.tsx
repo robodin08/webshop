@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { IoCloseOutline, IoFunnel } from "react-icons/io5";
 import { useCart } from "~/hooks/useCart";
 import { ProductCard } from "~/components/ProductCard";
 import type { Product } from "~/constants/products";
 import type { SortOption } from "~/contexts/CartContext";
+import { FILTER_CATEGORIES } from "~/constants/categories";
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { t } = useTranslation(["search", "common"]);
   const { searchProducts } = useCart();
 
@@ -18,14 +18,15 @@ function Search() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const query = searchParams.get("q") || "";
+  const categoryParam = searchParams.get("category") || "";
   const [minPrice, setMinPrice] = useState<string>(searchParams.get("min") || "");
   const [maxPrice, setMaxPrice] = useState<string>(searchParams.get("max") || "");
   const [sortBy, setSortBy] = useState<SortOption>((searchParams.get("s") as SortOption) || "relevance");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(categoryParam ? categoryParam.split(",") : []);
 
   useEffect(() => {
-    if (!query || query === "") navigate("/");
     document.title = `${t("pageTitle.searchWithQuery", { ns: "common", query: query || "" })} | ${t("pageTitle.home", { ns: "common" })}`;
-  }, [query, t]);
+  }, [query, selectedCategories, t]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -33,9 +34,10 @@ function Search() {
     if (minPrice) params.set("min", minPrice);
     if (maxPrice) params.set("max", maxPrice);
     if (sortBy !== "relevance") params.set("s", sortBy);
+    if (selectedCategories.length > 0) params.set("category", selectedCategories.join(","));
 
     setSearchParams(params, { replace: true });
-  }, [minPrice, maxPrice, sortBy]);
+  }, [minPrice, maxPrice, sortBy, selectedCategories, setSearchParams]);
 
   useEffect(() => {
     async function loadProducts() {
@@ -47,6 +49,7 @@ function Search() {
         minPrice: min,
         maxPrice: max,
         sortBy: sortBy,
+        categories: selectedCategories.length > 0 ? selectedCategories : undefined,
       });
 
       setProducts(results);
@@ -54,19 +57,27 @@ function Search() {
     }
 
     loadProducts();
-  }, [loaded, searchProducts, query, minPrice, maxPrice, sortBy]);
+  }, [loaded, searchProducts, query, minPrice, maxPrice, sortBy, selectedCategories]);
 
   function handleClearFilters() {
     setMinPrice("");
     setMaxPrice("");
     setSortBy("relevance");
+    setSelectedCategories([]);
 
     const params = new URLSearchParams();
     if (query) params.set("q", query);
     setSearchParams(params, { replace: true });
   }
 
-  const hasActiveFilters = minPrice !== "" || maxPrice !== "" || sortBy !== "relevance";
+  function toggleCategory(category: string) {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+    );
+  }
+
+  const hasActiveFilters =
+    minPrice !== "" || maxPrice !== "" || sortBy !== "relevance" || selectedCategories.length > 0;
 
   if (!loaded) return null;
 
@@ -93,11 +104,29 @@ function Search() {
               {hasActiveFilters && (
                 <button
                   onClick={handleClearFilters}
-                  className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                  className="cursor-pointer text-sm text-blue-600 hover:text-blue-800 hover:underline"
                 >
                   {t("clearFilters")}
                 </button>
               )}
+            </div>
+
+            {/* Categories Filter */}
+            <div className="mb-6">
+              <h3 className="mb-3 font-medium text-gray-900">{t("categories")}</h3>
+              <div className="space-y-2">
+                {FILTER_CATEGORIES.map((cat) => (
+                  <label key={cat.id} className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat.id)}
+                      onChange={() => toggleCategory(cat.id)}
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">{cat.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             {/* Price Range Filter */}
@@ -217,6 +246,24 @@ function Search() {
 
               {/* Filters Content */}
               <div className="flex-1 overflow-y-auto p-4">
+                {/* Categories */}
+                <div className="mb-6">
+                  <h3 className="mb-3 font-medium text-gray-900">{t("categories")}</h3>
+                  <div className="space-y-2">
+                    {FILTER_CATEGORIES.map((cat) => (
+                      <label key={cat.id} className="flex cursor-pointer items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(cat.id)}
+                          onChange={() => toggleCategory(cat.id)}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-gray-700">{cat.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Price Range */}
                 <div className="mb-6">
                   <h3 className="mb-3 font-medium text-gray-900">{t("priceRange")}</h3>

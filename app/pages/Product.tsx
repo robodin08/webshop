@@ -12,7 +12,7 @@ import {
 import type { Product as ProductType } from "~/constants/products";
 
 import { useCart } from "~/hooks/useCart";
-import { splitCurrencyAmount } from "~/utils";
+import { getProductImage, splitCurrencyAmount } from "~/utils";
 
 function Product() {
   const { pid } = useParams<{ pid: string }>();
@@ -72,7 +72,7 @@ function Product() {
             onClick={() => setLightboxOpen(true)}
           >
             <div className="h-full w-full p-5" id="image-container">
-              <img src={`/assets/products/${product.id}/${image}_big.png`} className="h-full w-full object-contain" />
+              <img src={getProductImage(Number(product.id), image, "big")} className="h-full w-full object-contain" />
             </div>
           </div>
 
@@ -87,7 +87,7 @@ function Product() {
                 }`}
               >
                 <img
-                  src={`/assets/products/${product.id}/${index}_small.png`}
+                  src={getProductImage(Number(product.id), index, "small")}
                   className="h-full w-full object-contain"
                 />
               </button>
@@ -159,7 +159,7 @@ function Product() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={`/assets/products/${product.id}/${image}_big.png`}
+              src={getProductImage(Number(product.id), image, "big")}
               className="h-5/6 max-h-full max-w-full object-contain"
             />
           </div>
@@ -192,7 +192,7 @@ function Product() {
                   }`}
                 >
                   <img
-                    src={`/assets/products/${product.id}/${index}_small.png`}
+                    src={getProductImage(Number(product.id), index, "small")}
                     className="h-full w-full object-contain"
                   />
                 </button>

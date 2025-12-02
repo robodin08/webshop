@@ -18,6 +18,7 @@ export interface SearchFilters {
   minPrice?: number;
   maxPrice?: number;
   sortBy?: SortOption;
+  categories?: string[];
 }
 
 export interface CartContextType {
@@ -26,7 +27,7 @@ export interface CartContextType {
   total: number;
   totalQuantity: number;
   getProductById: (id: string) => Promise<Product | undefined>;
-  searchProducts: (filters: SearchFilters) => Promise<Product[]>;
+  searchProducts: (filters: SearchFilters, max?: number) => Promise<Product[]>;
   incrementItemQuantity: (product: Product, quantity?: number) => void;
   decrementItemQuantity: (product: Product, quantity?: number) => void;
   setItemQuantity: (product: Product, quantity: number) => void;
@@ -149,7 +150,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // to api
   async function getProductById(id: string): Promise<Product | undefined> {
-    await sleep(500);
+    await sleep(50);
 
     const product = PRODUCTS.find((p) => p.id === id);
     if (!product) return undefined;
@@ -167,12 +168,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   // to api
-  async function searchProducts(filters: SearchFilters): Promise<Product[]> {
-    const loadedProducts = await Promise.all(
-      Array.from({ length: PRODUCTS.length }, async (_, index) => {
-        return await getProductById(String(index));
-      })
-    );
+  async function searchProducts(filters: SearchFilters, max?: number): Promise<Product[]> {
+    const loadedProducts = await Promise.all(PRODUCTS.map((product) => getProductById(product.id)));
 
     const products = loadedProducts.filter((p): p is Product => p !== undefined);
 
@@ -185,9 +182,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       );
     }
 
-    const min = filters.minPrice ?? 0;
-    const max = filters.maxPrice ?? Infinity;
-    filtered = filtered.filter((p) => p.price >= min && p.price <= max);
+    if (filters.categories && filters.categories.length > 0) {
+      const rawProducts = PRODUCTS.filter((p) => filters.categories!.some((cat) => p.categories.includes(cat as any)));
+      const categoryProductIds = new Set(rawProducts.map((p) => p.id));
+      filtered = filtered.filter((p) => categoryProductIds.has(p.id));
+    }
+
+    const minPrice = filters.minPrice ?? 0;
+    const maxPrice = filters.maxPrice ?? Infinity;
+    filtered = filtered.filter((p) => p.price >= minPrice && p.price <= maxPrice);
 
     const sorted = [...filtered];
     switch (filters.sortBy) {
@@ -207,6 +210,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       default:
         break;
     }
+
+    if (max) return sorted.slice(0, max);
 
     return sorted;
   }

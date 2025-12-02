@@ -1,0 +1,21 @@
+{
+    "hero": {
+        "title": "Level Up Your Gaming Setup",
+        "subtitle": "Discover the latest gaming gear, peripherals, and accessories to dominate your games",
+        "shopNow": "Shop Now",
+        "viewNew": "View New Arrivals"
+    },
+    "sections": {
+        "popular": "Popular Products",
+        "popularSubtitle": "Our best-selling gaming gear",
+        "new": "New Arrivals",
+        "newSubtitle": "Fresh gear just landed",
+        "categories": "Shop by Category",
+        "categoriesSubtitle": "Find exactly what you need"
+    },
+    "badge": {
+        "new": "NEW",
+        "popular": "POPULAR"
+    },
+    "viewAll": "View All"
+}

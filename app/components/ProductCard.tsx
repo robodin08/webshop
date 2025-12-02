@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { IoCartOutline, IoCheckmarkOutline } from "react-icons/io5";
 import type { Product } from "~/constants/products";
-import { formatCurrency } from "~/utils";
+import { formatCurrency, getProductImage } from "~/utils";
 import { useCart } from "~/hooks/useCart";
 
 interface ProductCardProps {
@@ -10,16 +10,32 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { t } = useTranslation(["search", "product"]);
+  const { t } = useTranslation(["search", "product", "home"]);
   const { cart, incrementItemQuantity } = useCart();
 
   const isInCart = !!cart[product.id];
+  const isPopular = product.categories.includes("popular");
+  const isNew = product.categories.includes("new");
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
       <Link to={`/p/${product.id}`} className="relative aspect-square overflow-hidden bg-gray-50">
+        {/* Category Badges */}
+        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+          {isPopular && (
+            <span className="rounded-full bg-yellow-500 px-3 py-1 text-xs font-bold text-white shadow-md">
+              {t("badge.popular", { ns: "home" })}
+            </span>
+          )}
+          {isNew && (
+            <span className="rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-md">
+              {t("badge.new", { ns: "home" })}
+            </span>
+          )}
+        </div>
+
         <img
-          src={`/assets/products/${product.id}/0_big.png`}
+          src={getProductImage(Number(product.id), 0, "big")}
           alt={product.name}
           className="h-full w-full object-contain p-4 transition-transform group-hover:scale-105"
         />

@@ -1,0 +1,21 @@
+{
+    "hero": {
+        "title": "Upgrade Je Gaming Setup",
+        "subtitle": "Ontdek de nieuwste gaming gear, randapparatuur en accessoires om je games te domineren",
+        "shopNow": "Shop Nu",
+        "viewNew": "Bekijk Nieuw"
+    },
+    "sections": {
+        "popular": "Populaire Producten",
+        "popularSubtitle": "Onze best verkopende gaming gear",
+        "new": "Nieuwe Aankomsten",
+        "newSubtitle": "Vers binnen",
+        "categories": "Shop op Categorie",
+        "categoriesSubtitle": "Vind precies wat je nodig hebt"
+    },
+    "badge": {
+        "new": "NIEUW",
+        "popular": "POPULAIR"
+    },
+    "viewAll": "Bekijk Alles"
+}

@@ -15,3 +15,7 @@ export function splitCurrencyAmount(price: number) {
     cents,
   };
 }
+
+export function getProductImage(productId: number, index: number, size: "big" | "small") {
+  return `/assets/products/${productId % 3}/${index % 5}_${size}.png`;
+}

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { IoAddOutline, IoRemoveOutline, IoTrash, IoCheckmarkCircleOutline, IoInformationCircle } from "react-icons/io5";
 import { useCart } from "~/hooks/useCart";
-import { formatCurrency } from "~/utils";
+import { formatCurrency, getProductImage } from "~/utils";
 import { DELIVERY_COST, FREE_DELIVERY_THRESHOLD } from "~/constants/delivery";
 
 function Cart() {
@@ -48,7 +48,6 @@ function Cart() {
           <div className="space-y-4">
             {cartItems.map((item) => {
               const itemTotal = item.price * item.quantity;
-              const imageUrl = `/assets/products/${item.id}/0_big.png`;
 
               return (
                 <div
@@ -58,7 +57,7 @@ function Cart() {
                   {/* Product Image */}
                   <Link to={`/p/${item.id}`} target="_blank" rel="noopener noreferrer" className="shrink-0">
                     <div className="aspect-square w-full overflow-hidden rounded-md sm:h-32 sm:w-32">
-                      <img src={imageUrl} className="h-full w-full object-contain" />
+                      <img src={getProductImage(Number(item.id), 0, "big")} className="h-full w-full object-contain" />
                     </div>
                   </Link>
 
