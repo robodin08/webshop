@@ -168,52 +168,76 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   // to api
-  async function searchProducts(filters: SearchFilters, max?: number): Promise<Product[]> {
-    const loadedProducts = await Promise.all(PRODUCTS.map((product) => getProductById(product.id)));
+  async function searchProducts(filters: SearchFilters, maxResults?: number): Promise<Product[]> {
+    const allProducts = PRODUCTS.filter((product) => product !== undefined);
 
-    const products = loadedProducts.filter((p): p is Product => p !== undefined);
-
-    let filtered = products;
+    let filteredProducts = allProducts;
 
     if (filters.query) {
-      const lowerQuery = filters.query.toLowerCase();
-      filtered = filtered.filter(
-        (p) => p.name.toLowerCase().includes(lowerQuery) || p.description.toLowerCase().includes(lowerQuery)
-      );
+      const searchQuery = filters.query.toLowerCase();
+
+      filteredProducts = filteredProducts.filter((product) => {
+        const matchesName = Object.values(product.name || {}).some((text) => text.toLowerCase().includes(searchQuery));
+
+        const matchesDescription = Object.values(product.description || {}).some((text) =>
+          text.toLowerCase().includes(searchQuery)
+        );
+
+        return matchesName || matchesDescription;
+      });
     }
 
     if (filters.categories && filters.categories.length > 0) {
-      const rawProducts = PRODUCTS.filter((p) => filters.categories!.some((cat) => p.categories.includes(cat as any)));
-      const categoryProductIds = new Set(rawProducts.map((p) => p.id));
-      filtered = filtered.filter((p) => categoryProductIds.has(p.id));
+      filteredProducts = filteredProducts.filter((product) =>
+        filters.categories!.some((category) => product.categories.includes(category as any))
+      );
     }
 
-    const minPrice = filters.minPrice ?? 0;
-    const maxPrice = filters.maxPrice ?? Infinity;
-    filtered = filtered.filter((p) => p.price >= minPrice && p.price <= maxPrice);
+    const minAllowedPrice = filters.minPrice ?? 0;
+    const maxAllowedPrice = filters.maxPrice ?? Infinity;
 
-    const sorted = [...filtered];
+    filteredProducts = filteredProducts.filter(
+      (product) => product.price >= minAllowedPrice && product.price <= maxAllowedPrice
+    );
+
+    const activeLanguage: LanguageKey =
+      i18n.resolvedLanguage && i18n.resolvedLanguage in allProducts[0].description
+        ? (i18n.resolvedLanguage as LanguageKey)
+        : "en";
+
+    const sortedProducts = [...filteredProducts];
+
     switch (filters.sortBy) {
       case "price-low":
-        sorted.sort((a, b) => a.price - b.price);
+        sortedProducts.sort((a, b) => a.price - b.price);
         break;
+
       case "price-high":
-        sorted.sort((a, b) => b.price - a.price);
+        sortedProducts.sort((a, b) => b.price - a.price);
         break;
+
       case "name-asc":
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        sortedProducts.sort((a, b) => (a.name?.[activeLanguage] ?? "").localeCompare(b.name?.[activeLanguage] ?? ""));
         break;
+
       case "name-desc":
-        sorted.sort((a, b) => b.name.localeCompare(a.name));
+        sortedProducts.sort((a, b) => (b.name?.[activeLanguage] ?? "").localeCompare(a.name?.[activeLanguage] ?? ""));
         break;
+
       case "relevance":
       default:
         break;
     }
 
-    if (max) return sorted.slice(0, max);
+    const localizedProducts = sortedProducts.map((product) => ({
+      ...product,
+      name: product.name[activeLanguage],
+      description: product.description[activeLanguage],
+    }));
 
-    return sorted;
+    if (maxResults) return localizedProducts.slice(0, maxResults);
+
+    return localizedProducts;
   }
 
   function incrementItemQuantity(product: Product, quantity = 1) {
